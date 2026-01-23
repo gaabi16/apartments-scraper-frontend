@@ -11,6 +11,13 @@ const fetchOptions = {
 function startScraping(site) {
     console.log(`Starting scraping for ${site}...`);
     
+    // Colectare date din filtre
+    const rooms = document.getElementById('rooms').value;
+    const minPrice = document.getElementById('min_price').value;
+    const maxPrice = document.getElementById('max_price').value;
+
+    console.log(`Applying filters: Rooms=${rooms}, Price=${minPrice}-${maxPrice}`);
+
     const statusText = document.getElementById(`status_${site}`);
     const statusBadge = document.getElementById(`badge_${site}`);
     const statusIcon = document.getElementById(`icon_${site}`);
@@ -29,7 +36,13 @@ function startScraping(site) {
     scrapeBtn.disabled = true;
     downloadBtn.disabled = true;
     
-    fetch(`${BACKEND_URL}/scrape/${site}`, fetchOptions)
+    // Construire URL cu parametrii de filtrare
+    const url = new URL(`${BACKEND_URL}/scrape/${site}`);
+    url.searchParams.append('rooms', rooms);
+    url.searchParams.append('price_min', minPrice);
+    url.searchParams.append('price_max', maxPrice);
+
+    fetch(url, fetchOptions)
         .then(response => {
             console.log('Response:', response);
             return response.json();
