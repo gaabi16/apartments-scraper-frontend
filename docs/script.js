@@ -13,10 +13,11 @@ function startScraping(site) {
     
     // Colectare date din filtre
     const rooms = document.getElementById('rooms').value;
+    const sector = document.getElementById('sector').value;
     const minPrice = document.getElementById('min_price').value;
     const maxPrice = document.getElementById('max_price').value;
 
-    console.log(`Applying filters: Rooms=${rooms}, Price=${minPrice}-${maxPrice}`);
+    console.log(`Applying filters: Rooms=${rooms}, Sector=${sector}, Price=${minPrice}-${maxPrice}`);
 
     const statusText = document.getElementById(`status_${site}`);
     const statusBadge = document.getElementById(`badge_${site}`);
@@ -39,6 +40,7 @@ function startScraping(site) {
     // Construire URL cu parametrii de filtrare
     const url = new URL(`${BACKEND_URL}/scrape/${site}`);
     url.searchParams.append('rooms', rooms);
+    url.searchParams.append('sector', sector);
     url.searchParams.append('price_min', minPrice);
     url.searchParams.append('price_max', maxPrice);
 
