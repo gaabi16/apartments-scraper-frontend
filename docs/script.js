@@ -35,14 +35,29 @@ function loadFilters() {
 function startScraping(site) {
     console.log(`Starting scraping for ${site}...`);
     
-    // Salvăm filtrele curent selectate înainte de request
+    // --- VALIDARE INPUT-URI (NOU) ---
+    const minPriceVal = document.getElementById('min_price').value;
+    const maxPriceVal = document.getElementById('max_price').value;
+
+    // Convertim la numere pentru comparație
+    const min = parseFloat(minPriceVal);
+    const max = parseFloat(maxPriceVal);
+
+    if (minPriceVal && maxPriceVal && min > max) {
+        alert(`Eroare: Prețul minim (${min}€) nu poate fi mai mare decât prețul maxim (${max}€)!`);
+        return; // Oprim execuția funcției aici
+    }
+    // --- SFÂRȘIT VALIDARE ---
+
+    // Salvăm filtrele curent selectate (doar dacă validarea a trecut)
     saveFilters();
     
     // Colectare date din filtre
     const rooms = document.getElementById('rooms').value;
     const sector = document.getElementById('sector').value;
-    const minPrice = document.getElementById('min_price').value;
-    const maxPrice = document.getElementById('max_price').value;
+    // Folosim valorile deja extrase mai sus
+    const minPrice = minPriceVal;
+    const maxPrice = maxPriceVal;
 
     console.log(`Applying filters: Rooms=${rooms}, Sector=${sector}, Price=${minPrice}-${maxPrice}`);
 
