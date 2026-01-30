@@ -8,8 +8,35 @@ const fetchOptions = {
     }
 };
 
+// --- Funcții Noi pentru LocalStorage ---
+
+function saveFilters() {
+    localStorage.setItem('rooms', document.getElementById('rooms').value);
+    localStorage.setItem('sector', document.getElementById('sector').value);
+    localStorage.setItem('min_price', document.getElementById('min_price').value);
+    localStorage.setItem('max_price', document.getElementById('max_price').value);
+    console.log('Filtre salvate în LocalStorage');
+}
+
+function loadFilters() {
+    const savedRooms = localStorage.getItem('rooms');
+    const savedSector = localStorage.getItem('sector');
+    const savedMinPrice = localStorage.getItem('min_price');
+    const savedMaxPrice = localStorage.getItem('max_price');
+
+    if (savedRooms) document.getElementById('rooms').value = savedRooms;
+    if (savedSector) document.getElementById('sector').value = savedSector;
+    if (savedMinPrice) document.getElementById('min_price').value = savedMinPrice;
+    if (savedMaxPrice) document.getElementById('max_price').value = savedMaxPrice;
+}
+
+// --- Sfârșit Funcții Noi ---
+
 function startScraping(site) {
     console.log(`Starting scraping for ${site}...`);
+    
+    // Salvăm filtrele curent selectate înainte de request
+    saveFilters();
     
     // Colectare date din filtre
     const rooms = document.getElementById('rooms').value;
@@ -146,6 +173,9 @@ function resetUI(site) {
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Page loaded, Backend URL:', BACKEND_URL);
+    
+    // Încărcăm filtrele salvate la pornirea paginii
+    loadFilters();
     
     ['imobiliare', 'publi24', 'romimo'].forEach(site => {
         fetch(`${BACKEND_URL}/status/${site}`, fetchOptions)
