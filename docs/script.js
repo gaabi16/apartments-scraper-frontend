@@ -1,5 +1,8 @@
 const BACKEND_URL = 'https://nonpractically-unlamed-kesha.ngrok-free.dev';
 
+// varianta locala:
+// const BACKEND_URL = 'http://127.0.0.1:5000';
+
 // Headers pentru ngrok
 const fetchOptions = {
     headers: {
@@ -89,6 +92,10 @@ function startScraping(site) {
     fetch(url, fetchOptions)
         .then(response => {
             console.log('Response:', response);
+            if (!response.ok) {
+                // Dacă backend-ul returnează eroare (de ex. validare preț eșuată)
+                return response.json().then(err => { throw new Error(err.error || 'Eroare server'); });
+            }
             return response.json();
         })
         .then(data => {
@@ -103,7 +110,7 @@ function startScraping(site) {
         })
         .catch(error => {
             console.error('Error:', error);
-            statusText.innerText = "Eroare la conectarea cu backend-ul";
+            statusText.innerText = "Eroare: " + error.message;
             resetUI(site);
         });
 }
@@ -159,16 +166,16 @@ function checkStatus(site) {
 
 function downloadFile(site) {
     const statusText = document.getElementById(`status_${site}`);
-    statusText.innerText = "Se pregătește descărcarea...";
+    // Mesaj temporar
+    const originalText = "✓ Scraping terminat cu succes!";
+    statusText.innerText = "Se descarcă...";
     
     window.location.href = `${BACKEND_URL}/download/${site}`;
     
+    // MODIFICARE: Nu mai resetam UI-ul complet pentru a permite re-descarcarea
     setTimeout(() => {
-        statusText.innerText = "Fișier descărcat!";
-        setTimeout(() => {
-            statusText.innerText = "Apasă butonul pentru a începe";
-        }, 3000);
-    }, 1000);
+        statusText.innerText = originalText;
+    }, 2000);
 }
 
 function resetUI(site) {
@@ -178,7 +185,11 @@ function resetUI(site) {
     const progressBar = document.getElementById(`progress_${site}`);
     const scrapeBtn = document.getElementById(`btn_scrape_${site}`);
     
-    statusText.innerText = "Apasă butonul pentru a începe";
+    // Doar dacă nu avem deja textul de eroare setat
+    if (!statusText.innerText.startsWith("Eroare")) {
+        statusText.innerText = "Apasă butonul pentru a începe";
+    }
+    
     statusBadge.innerText = "Gata";
     statusBadge.classList.remove("running", "finished");
     statusIcon.classList.remove("spinning", "success");
