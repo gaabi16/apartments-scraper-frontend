@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartamente Noi Azi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="feed.css">
+</head>
+<body>
+    <div class="container">
+        <header style="position: relative;">
+            <a href="index.html" class="back-link" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">← Înapoi</a>
+            <h1>🆕 Apartamente Noi Azi</h1>
+            <p class="subtitle" id="feed-subtitle">Anunțuri apărute azi, inexistente ieri</p>
+        </header>
+
+        <!-- Filtre -->
+        <div class="filters-wrapper">
+            <div class="filter-card">
+                <h3>🔍 Filtrează rezultatele</h3>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="rooms">Camere:</label>
+                        <select id="rooms" class="filter-input">
+                            <option value="">Toate</option>
+                            <option value="1">1 cameră</option>
+                            <option value="2">2 camere</option>
+                            <option value="3">3 camere</option>
+                            <option value="4">4+ camere</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sector">Sector:</label>
+                        <select id="sector" class="filter-input">
+                            <option value="">Toate</option>
+                            <option value="1">Sector 1</option>
+                            <option value="2">Sector 2</option>
+                            <option value="3">Sector 3</option>
+                            <option value="4">Sector 4</option>
+                            <option value="5">Sector 5</option>
+                            <option value="6">Sector 6</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Preț (€):</label>
+                        <div class="price-inputs">
+                            <input type="number" id="min_price" class="filter-input" placeholder="Min">
+                            <span class="separator">-</span>
+                            <input type="number" id="max_price" class="filter-input" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filter-group" style="justify-content: flex-end;">
+                        <button class="btn btn-primary" onclick="applyFilters()" style="margin-top: 24px;">
+                            Aplică filtre
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feed cards -->
+        <div id="feed-loading" class="feed-loading">
+            <div class="spinner"></div>
+            <p>Se încarcă anunțurile...</p>
+        </div>
+
+        <div id="feed-empty" class="feed-empty" style="display:none;">
+            <p>Nu există apartamente noi azi față de ieri.<br>
+               Revin mâine după rularea automată la 07:00 sau lansează manual un scraping.</p>
+            <a href="index.html" class="btn btn-primary" style="margin-top: 16px; text-decoration: none; display: inline-flex; width: auto; padding: 10px 24px;">
+                Lansează scraping manual
+            </a>
+        </div>
+
+        <div id="feed-grid" class="feed-grid" style="display:none;"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="feed.js"></script>
+</body>
+</html>
