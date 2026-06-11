@@ -3,43 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rezultate Apartamente</title>
+    <title>Toate Apartamentele</title>
     <link rel="stylesheet" href="apartments.css">
 </head>
 <body>
     <div class="container">
         <header style="position: relative;">
             <a href="index.html" class="back-link" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.9rem;">← Înapoi</a>
-            
-            <h1>📊 Bază de Date Apartamente</h1>
-            <p class="subtitle">Ultimele 10 anunțuri salvate în sistem</p>
+            <h1>📊 Toate Apartamentele</h1>
+            <p class="subtitle" id="apts-subtitle">Baza de date completă</p>
         </header>
 
-        <div class="table-wrapper">
+        <!-- Filtre + căutare -->
+        <div class="filters-wrapper">
+            <div class="filter-card">
+                <h3>🔍 Filtrează</h3>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="rooms">Camere:</label>
+                        <select id="rooms" class="filter-input">
+                            <option value="">Toate</option>
+                            <option value="1">1 cameră</option>
+                            <option value="2">2 camere</option>
+                            <option value="3">3 camere</option>
+                            <option value="4">4+ camere</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sector">Sector:</label>
+                        <select id="sector" class="filter-input">
+                            <option value="">Toate</option>
+                            <option value="1">Sector 1</option>
+                            <option value="2">Sector 2</option>
+                            <option value="3">Sector 3</option>
+                            <option value="4">Sector 4</option>
+                            <option value="5">Sector 5</option>
+                            <option value="6">Sector 6</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Preț (€):</label>
+                        <div class="price-inputs">
+                            <input type="number" id="min_price" class="filter-input" placeholder="Min">
+                            <span class="separator">-</span>
+                            <input type="number" id="max_price" class="filter-input" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filter-group" style="justify-content: flex-end;">
+                        <button class="btn btn-primary" onclick="applyFilters()" style="margin-top: 24px;">
+                            Caută
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="apts-loading" class="apts-loading">
+            <div class="apts-spinner"></div>
+            <p>Se încarcă...</p>
+        </div>
+
+        <!-- Tabel -->
+        <div class="table-wrapper" id="apts-wrapper" style="display:none;">
             <div class="table-card">
                 <div class="table-responsive">
                     <table class="styled-table">
                         <thead>
                             <tr>
                                 <th>Sursă</th>
-                                <th>Titlu</th>
-                                <th>Preț (€)</th>
-                                <th>Locație</th>
-                                <th>Suprafață</th>
+                                <th class="sortable" data-col="title">Titlu</th>
+                                <th class="sortable" data-col="price">Preț (€) <span class="sort-icon">↕</span></th>
+                                <th class="sortable" data-col="location">Locație</th>
+                                <th class="sortable" data-col="surface">Suprafață <span class="sort-icon">↕</span></th>
                                 <th>Etaj</th>
                                 <th>Contact</th>
-                                <th>Acțiune</th>
+                                <th>Anunț</th>
+                                <th class="sortable active-sort" data-col="scraped_at">Data <span class="sort-icon">↓</span></th>
                             </tr>
                         </thead>
-                        <tbody id="apartments-tbody">
-                            </tbody>
+                        <tbody id="apartments-tbody"></tbody>
                     </table>
                 </div>
+
+                <!-- Paginare -->
+                <div class="pagination" id="pagination"></div>
             </div>
         </div>
 
+        <div id="apts-empty" class="apts-empty" style="display:none;">
+            <p>Niciun apartament găsit cu filtrele selectate.</p>
+        </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="apartments.js"></script>
 </body>
 </html>
