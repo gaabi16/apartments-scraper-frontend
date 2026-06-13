@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toate Apartamentele</title>
-    <link rel="stylesheet" href="apartments.css">
+    <title>Apartamente Noi Azi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="feed.css">
 </head>
 <body>
     <div class="container">
         <header style="position: relative;">
-            <a href="index.html" class="back-link" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.9rem;">← Înapoi</a>
-            <h1>📊 Toate Apartamentele</h1>
-            <p class="subtitle" id="apts-subtitle">Baza de date completă</p>
+            <a href="index.html" class="back-link" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">← Înapoi</a>
+            <h1>🆕 Apartamente Noi Azi</h1>
+            <p class="subtitle" id="feed-subtitle">Anunțuri apărute azi, inexistente ieri</p>
         </header>
 
-        <!-- Filtre + căutare -->
+        <!-- Filtre -->
         <div class="filters-wrapper">
             <div class="filter-card">
-                <h3>🔍 Filtrează</h3>
+                <h3>🔍 Filtrează rezultatele</h3>
                 <div class="filters-row">
                     <div class="filter-group">
                         <label for="rooms">Camere:</label>
@@ -51,52 +52,31 @@
                     </div>
                     <div class="filter-group" style="justify-content: flex-end;">
                         <button class="btn btn-primary" onclick="applyFilters()" style="margin-top: 24px;">
-                            Caută
+                            Aplică filtre
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Loading -->
-        <div id="apts-loading" class="apts-loading">
-            <div class="apts-spinner"></div>
-            <p>Se încarcă...</p>
+        <!-- Feed cards -->
+        <div id="feed-loading" class="feed-loading">
+            <div class="spinner"></div>
+            <p>Se încarcă anunțurile...</p>
         </div>
 
-        <!-- Tabel -->
-        <div class="table-wrapper" id="apts-wrapper" style="display:none;">
-            <div class="table-card">
-                <div class="table-responsive">
-                    <table class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>Sursă</th>
-                                <th class="sortable" data-col="title">Titlu</th>
-                                <th class="sortable" data-col="price">Preț (€) <span class="sort-icon">↕</span></th>
-                                <th class="sortable" data-col="location">Locație</th>
-                                <th class="sortable" data-col="surface">Suprafață <span class="sort-icon">↕</span></th>
-                                <th>Etaj</th>
-                                <th>Contact</th>
-                                <th>Anunț</th>
-                                <th class="sortable active-sort" data-col="scraped_at">Data <span class="sort-icon">↓</span></th>
-                            </tr>
-                        </thead>
-                        <tbody id="apartments-tbody"></tbody>
-                    </table>
-                </div>
-
-                <!-- Paginare -->
-                <div class="pagination" id="pagination"></div>
-            </div>
+        <div id="feed-empty" class="feed-empty" style="display:none;">
+            <p>Nu există apartamente noi azi față de ieri.<br>
+               Revin mâine după rularea automată la 07:00 sau lansează manual un scraping.</p>
+            <a href="index.html" class="btn btn-primary" style="margin-top: 16px; text-decoration: none; display: inline-flex; width: auto; padding: 10px 24px;">
+                Lansează scraping manual
+            </a>
         </div>
 
-        <div id="apts-empty" class="apts-empty" style="display:none;">
-            <p>Niciun apartament găsit cu filtrele selectate.</p>
-        </div>
+        <div id="feed-grid" class="feed-grid" style="display:none;"></div>
     </div>
 
     <script src="config.js"></script>
-    <script src="apartments.js"></script>
+    <script src="feed.js"></script>
 </body>
 </html>
